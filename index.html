@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For You ❤️</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  overflow:hidden;
+  color:white;
+  background:linear-gradient(-45deg,#ff9a9e,#fad0c4,#ffdde1,#ee9ca7);
+  background-size:400% 400%;
+  animation:bg 12s ease infinite;
+}
+
+@keyframes bg{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* ---------- HOME ---------- */
+
+#home{
+  position:relative;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.name{
+  color:#ff4d6d;
+}
+
+h1{
+  margin:0;
+  font-size:32px;
+  animation:pulse 2s infinite;
+}
+
+.sub{
+  margin-top:18px;
+  font-size:18px;
+  display: none;
+}
+
+
+/* buttons */
+
+.btn{
+  position:absolute;
+  padding:16px 28px;
+  font-size:19px;
+  border:none;
+  border-radius:16px;
+  cursor:pointer;
+}
+
+#yes{
+  background:#ff4d6d;
+  color:white;
+  left:calc(50% - 140px);
+  top:calc(50% + 110px);   /* pushed down */
+}
+
+#no{
+  background:white;
+  color:#333;
+  left:calc(50% + 20px);
+  top:calc(50% + 110px);   /* pushed down */
+}
+
+
+/* ---------- YES SCREEN ---------- */
+
+#yesScreen{
+  display:none;
+  height:100vh;
+  text-align:center;
+  background:linear-gradient(180deg,#ff4d6d,#c9184a);
+}
+
+#video{
+  width:280px;
+  max-width:92%;
+  border-radius:20px;
+  margin-top:60px;
+}
+
+#msg{
+  font-size:22px;
+  margin:26px;
+}
+
+/* hearts */
+
+.heart{
+  position:absolute;
+  bottom:-20px;
+  font-size:22px;
+  animation:up 7s linear infinite;
+}
+
+@keyframes up{
+  to{transform:translateY(-110vh);opacity:0;}
+}
+
+@keyframes pulse{
+  50%{transform:scale(1.05);}
+}
+</style>
+</head>
+
+<body>
+
+<div id="home">
+  <h1><span class="name">Luv</span>, Will you be my Valentine? ❤️</h1>
+  <div class="sub">Choose wisely 😌</div>
+
+  <button id="yes" class="btn">Yes 💖</button>
+  <button id="no"  class="btn">No 😏</button>
+</div>
+
+<div id="yesScreen">
+  <video id="video" muted playsinline loop>
+    <source src="video.mp4" type="video/mp4">
+  </video>
+  <div id="msg"></div>
+</div>
+
+<audio id="music" src="song.mp3" loop></audio>
+
+<script>
+const yes = document.getElementById("yes");
+const no  = document.getElementById("no");
+
+/* hearts */
+
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤️";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),8000);
+},500);
+
+/* safe move */
+
+function moveNo(){
+  const yesR = yes.getBoundingClientRect();
+  const w = no.offsetWidth;
+  const h = no.offsetHeight;
+
+  let x,y,overlap;
+
+  do{
+    x = Math.random()*(window.innerWidth - w);
+    y = Math.random()*(window.innerHeight - h);
+
+    overlap =
+      x < yesR.right &&
+      x+w > yesR.left &&
+      y < yesR.bottom &&
+      y+h > yesR.top;
+
+  } while(overlap);
+
+  no.style.left = x+"px";
+  no.style.top  = y+"px";
+}
+
+no.addEventListener("mouseenter", moveNo);
+no.addEventListener("touchstart", e=>{
+  e.preventDefault();
+  moveNo();
+});
+
+/* YES click */
+
+yes.onclick = ()=>{
+  home.style.display="none";
+  yesScreen.style.display="block";
+  music.play();
+  video.play();
+  type();
+};
+
+/* typing */
+const text = `I love you Luv ❤️
+You are stuck with me now! 😏`;
+
+function type(){
+  let i=0;
+  const el=document.getElementById("msg");
+  const t=setInterval(()=>{
+    const ch = text[i++];
+    el.innerHTML += (ch === "\n") ? "<br>" : ch;
+    if(i>=text.length) clearInterval(t);
+  },60);
+}
+</script>
+
+</body>
+</html>
