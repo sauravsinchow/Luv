@@ -53,6 +53,12 @@ h1{
   display: none;
 }
 
+.sticker{
+  width:140px;
+  max-width:60%;
+  margin-bottom:16px;
+}
+
 
 /* buttons */
 
@@ -133,12 +139,22 @@ h1{
 @keyframes pulse{
   50%{transform:scale(1.05);}
 }
+
+@media (max-width: 600px){
+    #yes,
+    #no{
+    top: calc(50% + 140px);
+    }
+}
+
+
 </style>
 </head>
 
 <body>
 
 <div id="home">
+  <img src="sticker.avif" class="sticker">
   <h1><span class="name">Luv</span>, Will you be my Valentine? ❤️</h1>
   <div class="sub">Choose wisely 😌</div>
 
@@ -166,7 +182,6 @@ const imgElement = document.getElementById("valentineImg");
 // Make sure these match your filenames inside the 'image' folder!
 const images = [
   "pic.jpg"
-//   "image/2.jpeg"
 ];
 
 let currentImgIndex = 0;
